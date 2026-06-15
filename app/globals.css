@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+:root {
+  --background: #07080d;
+  --foreground: #ffffff;
+}
+
+html {
+  min-height: 100%;
+  background: var(--background);
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(0, 212, 255, 0.14), transparent 32%),
+    radial-gradient(circle at top right, rgba(255, 45, 85, 0.12), transparent 34%),
+    radial-gradient(circle at bottom, rgba(142, 108, 255, 0.13), transparent 38%),
+    #07080d;
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(18px);
+}
+
+.iphone-page {
+  min-height: 100vh;
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 28px 20px 140px;
+  overflow-x: hidden;
+}
+
+.iphone-header {
+  margin-bottom: 24px;
+}
+
+.iphone-eyebrow {
+  color: rgb(255 255 255 / 0.55);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.iphone-title {
+  font-size: 2.15rem;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -0.045em;
+}
+
+.iphone-subtitle {
+  margin-top: 8px;
+  color: rgb(255 255 255 / 0.62);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.iphone-card {
+  border-radius: 28px;
+  padding: 20px;
+  background: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.18);
+}
+
+.iphone-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.iphone-button {
+  min-height: 58px;
+  border-radius: 20px;
+  padding: 0 18px;
+  background: rgb(255 255 255 / 0.1);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 800;
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.iphone-button:active {
+  transform: scale(0.98);
+  background: rgb(255 255 255 / 0.16);
+}
+
+.iphone-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.iphone-small-card {
+  min-height: 126px;
+  border-radius: 26px;
+  padding: 18px;
+  background: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  box-shadow: 0 16px 34px rgb(0 0 0 / 0.16);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@media (max-width: 380px) {
+  .iphone-page {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .iphone-title {
+    font-size: 1.95rem;
+  }
+
+  .iphone-grid {
+    gap: 12px;
+  }
+}
+
+/* Light mode */
+
+html.light-mode {
+  background: #f4f7fb;
+}
+
+html.light-mode body {
+  background:
+    radial-gradient(circle at top left, rgba(255, 45, 85, 0.1), transparent 40%),
+    radial-gradient(circle at bottom right, rgba(0, 180, 216, 0.14), transparent 40%),
+    #f4f7fb;
+  color: #111827;
+}
+
+html.light-mode .glass {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+}
+
+html.light-mode .iphone-eyebrow,
+html.light-mode .iphone-subtitle,
+html.light-mode .text-white\/60,
+html.light-mode .text-white\/55,
+html.light-mode .text-white\/50,
+html.light-mode .text-white\/45,
+html.light-mode .text-white\/40,
+html.light-mode .text-white\/35 {
+  color: rgb(17 24 39 / 0.62) !important;
+}
+
+html.light-mode .text-white,
+html.light-mode h1,
+html.light-mode h2,
+html.light-mode h3,
+html.light-mode p,
+html.light-mode span,
+html.light-mode label {
+  color: #111827;
+}
+
+html.light-mode .iphone-card,
+html.light-mode .iphone-button,
+html.light-mode .iphone-small-card {
+  background: rgb(255 255 255 / 0.82);
+  border-color: rgb(15 23 42 / 0.1);
+  box-shadow: 0 18px 40px rgb(15 23 42 / 0.08);
+}
+
+html.light-mode textarea,
+html.light-mode input {
+  background: rgba(15, 23, 42, 0.05);
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #111827;
+}
+
+html.light-mode textarea::placeholder,
+html.light-mode input::placeholder {
+  color: rgba(17, 24, 39, 0.45);
+}
