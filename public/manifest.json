@@ -1,0 +1,22 @@
+{
+  "name": "Silverstone Companion",
+  "short_name": "Silverstone",
+  "description": "Formula 1 British Grand Prix camping companion",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070B14",
+  "theme_color": "#070B14",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
