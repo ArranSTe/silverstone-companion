@@ -16,9 +16,9 @@ import {
 export default function SettingsPage() {
   const router = useRouter()
 
-  const [notifications, setNotifications] = useState<NotificationPermission | "unsupported">(
-    "default"
-  )
+  const [notifications, setNotifications] = useState<
+    NotificationPermission | "unsupported"
+  >("default")
 
   const [userEmail, setUserEmail] = useState<string>("")
   const [darkMode, setDarkMode] = useState(true)
@@ -67,7 +67,7 @@ export default function SettingsPage() {
 
   const clearSavedData = () => {
     const confirmClear = confirm(
-      "This will clear saved tickets, packing ticks, tent location, weather and reminders. Continue?"
+      "This will clear saved tickets, packing ticks, tent location, weather, notes and reminders. Continue?"
     )
 
     if (!confirmClear) return
@@ -83,67 +83,76 @@ export default function SettingsPage() {
   }
 
   return (
-    <main className="min-h-screen px-5 pt-6 pb-40">
-      <h1 className="text-4xl font-bold">
-        Settings
-      </h1>
+    <main className="iphone-page text-white">
+      <header className="iphone-header">
+        <p className="iphone-eyebrow">App controls</p>
 
-      <p className="text-white/60 mt-2">
-        App preferences, notifications and saved data.
-      </p>
+        <h1 className="iphone-title">
+          Settings
+        </h1>
 
-      <section className="glass rounded-3xl p-5 mt-6">
+        <p className="iphone-subtitle">
+          Manage notifications, theme, saved data and your app login.
+        </p>
+      </header>
+
+      <section className="iphone-card mb-5">
         <div className="flex items-center gap-3">
-          <User className="text-cyan-300" />
+          <div className="h-12 w-12 rounded-2xl bg-cyan-300/20 flex items-center justify-center">
+            <User className="text-cyan-200" />
+          </div>
 
-          <div>
-            <h2 className="text-xl font-bold">
-              Signed In
+          <div className="min-w-0">
+            <h2 className="text-xl font-black">
+              Signed in
             </h2>
 
-            <p className="text-white/60 mt-1">
+            <p className="text-white/60 mt-1 truncate">
               {userEmail || "No user found"}
             </p>
           </div>
         </div>
       </section>
 
-      <div className="space-y-4 mt-6">
+      <section className="iphone-list">
         <button
           onClick={requestNotifications}
-          className="glass rounded-3xl p-5 w-full flex justify-between items-center text-left"
+          className="iphone-button w-full text-left"
         >
-          <span className="flex items-center gap-3">
-            <Bell className="text-cyan-300" />
+          <Bell className="text-cyan-200" />
+
+          <span className="flex-1">
             Notifications
           </span>
 
-          <span className="text-white/60 capitalize">
+          <span className="text-white/50 text-sm capitalize">
             {notifications}
           </span>
         </button>
 
-        <div className="glass rounded-3xl p-5 flex justify-between items-center">
-          <span className="flex items-center gap-3">
-            <Download className="text-pink-300" />
+        <div className="iphone-button">
+          <Download className="text-pink-200" />
+
+          <span className="flex-1">
             Offline Data
           </span>
 
-          <span className="text-white/60">
+          <span className="text-white/50 text-sm">
             Enabled
           </span>
         </div>
 
-        <div className="glass rounded-3xl p-5 flex justify-between items-center gap-4">
-          <span className="flex items-center gap-3">
-            <Moon className="text-purple-300" />
+        <div className="iphone-button">
+          <Moon className="text-purple-200" />
+
+          <span className="flex-1">
             Dark Mode
           </span>
 
           <button
             onClick={() => setDarkMode(!darkMode)}
             className={`relative h-8 w-14 rounded-full transition ${
-              darkMode ? "bg-cyan-400" : "bg-black/20"
+              darkMode ? "bg-cyan-300" : "bg-black/20"
             }`}
             aria-label="Toggle dark mode"
           >
@@ -155,44 +164,47 @@ export default function SettingsPage() {
           </button>
         </div>
 
-        <div className="glass rounded-3xl p-5 flex justify-between items-center">
-          <span className="flex items-center gap-3">
-            <Smartphone className="text-cyan-300" />
+        <div className="iphone-button">
+          <Smartphone className="text-cyan-200" />
+
+          <span className="flex-1">
             App Version
           </span>
 
-          <span className="text-white/60">
+          <span className="text-white/50 text-sm">
             1.0.0
           </span>
         </div>
 
         <button
           onClick={signOut}
-          className="glass rounded-3xl p-5 w-full flex justify-between items-center text-left"
+          className="iphone-button w-full text-left"
         >
-          <span className="flex items-center gap-3">
-            <LogOut className="text-yellow-300" />
+          <LogOut className="text-yellow-200" />
+
+          <span className="flex-1">
             Sign Out
           </span>
         </button>
 
         <button
           onClick={clearSavedData}
-          className="glass rounded-3xl p-5 w-full flex justify-between items-center text-left text-red-300"
+          className="iphone-button w-full text-left text-red-200"
         >
-          <span className="flex items-center gap-3">
-            <Trash2 />
+          <Trash2 />
+
+          <span className="flex-1">
             Clear All Saved Data
           </span>
         </button>
-      </div>
+      </section>
 
-      <section className="glass rounded-3xl p-5 mt-6">
-        <h2 className="text-xl font-bold">
-          Notification Note
+      <section className="iphone-card mt-5">
+        <h2 className="text-xl font-black">
+          Notification note
         </h2>
 
-        <p className="text-white/60 mt-2">
+        <p className="text-white/60 mt-2 leading-relaxed">
           Schedule reminders work locally while the app is open or recently active. Full push notifications when the app is fully closed would need a backend later.
         </p>
       </section>

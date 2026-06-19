@@ -29,14 +29,21 @@ type SessionState = {
 export default function DashboardPage() {
   const [firstName, setFirstName] = useState("Alex")
   const [sessionState, setSessionState] = useState<SessionState>(null)
+  const [stayType, setStayType] = useState<"Camping" | "Hotel">("Camping")
 
   useEffect(() => {
     const savedUser = localStorage.getItem("silverstone-user")
+    const savedPreferences = localStorage.getItem("silverstone-preferences")
 
     if (savedUser) {
       const user = JSON.parse(savedUser)
       setFirstName(user.firstName || "Alex")
     }
+
+    if (savedPreferences) {
+        const preferences = JSON.parse(savedPreferences)
+        setStayType(preferences.stayType || "Camping")
+      }
 
     const update = () => {
       setSessionState(getCurrentOrNextSession())
@@ -49,12 +56,10 @@ export default function DashboardPage() {
   }, [])
 
   return (
-    <main className="min-h-screen max-w-[430px] mx-auto text-white px-5 pt-7 pb-36 overflow-x-hidden">
+    <main className="iphone-page text-white">
       <header className="flex items-center justify-between gap-4 mb-7">
         <div className="min-w-0">
-          <p className="text-white/55 text-sm font-medium">
-            Silverstone Companion
-          </p>
+          <p className="iphone-eyebrow">Silverstone Companion</p>
 
           <h1 className="text-[34px] leading-[36px] font-black tracking-[-1.4px] mt-1">
             Hello {firstName}
@@ -71,9 +76,7 @@ export default function DashboardPage() {
       </header>
 
       <section className="rounded-[32px] bg-gradient-to-br from-cyan-300/25 to-purple-400/20 border border-white/10 p-5 shadow-xl mb-5">
-        <p className="text-white/60 text-sm font-medium">
-          Next up
-        </p>
+        <p className="text-white/60 text-sm font-medium">Next up</p>
 
         {sessionState ? (
           <>
@@ -130,24 +133,30 @@ export default function DashboardPage() {
           className="bg-[#8e6cff]"
         />
 
-        <FeatureCard
-          href="/tent-map"
-          icon={<MapPin size={28} />}
-          title="Tent"
-          subtitle="Find camp"
-          className="bg-[#2d9f7b]"
-        />
+{stayType === "Camping" ? (
+  <FeatureCard
+    href="/tent-map"
+    icon={<MapPin size={28} />}
+    title="Tent"
+    subtitle="Find camp"
+    className="bg-[#2d9f7b]"
+  />
+) : (
+  <FeatureCard
+    href="/transport"
+    icon={<Truck size={28} />}
+    title="Travel"
+    subtitle="Transport hub"
+    className="bg-[#2d9f7b]"
+  />
+)}
       </section>
 
       <section className="rounded-[28px] bg-white/8 border border-white/10 p-4 mb-5">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-xl font-black">
-            Quick links
-          </h2>
+          <h2 className="text-xl font-black">Quick links</h2>
 
-          <p className="text-white/45 text-sm">
-            Tap to open
-          </p>
+          <p className="text-white/45 text-sm">Tap to open</p>
         </div>
 
         <div className="space-y-3">
@@ -180,7 +189,7 @@ function FeatureCard({
   return (
     <Link
       href={href}
-      className={`${className} min-h-[132px] rounded-[28px] p-4 shadow-lg flex flex-col justify-between active:scale-[0.98] transition`}
+      className={`${className} min-h-[132px] rounded-[28px] p-4 shadow-lg flex flex-col justify-between active:scale-[0.98] transition text-white`}
     >
       <div className="h-11 w-11 rounded-2xl bg-white/20 flex items-center justify-center">
         {icon}

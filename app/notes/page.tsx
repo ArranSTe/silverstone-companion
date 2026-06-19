@@ -56,58 +56,71 @@ export default function NotesPage() {
   }
 
   return (
-    <main className="min-h-screen p-6 pb-32">
-      <h1 className="text-4xl font-bold">
-        Notes
-      </h1>
+    <main className="iphone-page text-white">
+      <header className="iphone-header">
+        <p className="iphone-eyebrow">Quick reminders</p>
 
-      <p className="text-white/60 mt-2">
-        Save quick reminders for your Silverstone weekend.
-      </p>
+        <h1 className="iphone-title">
+          Notes
+        </h1>
 
-      <section className="glass rounded-3xl p-5 mt-6">
+        <p className="iphone-subtitle">
+          Save anything you need to remember during the weekend.
+        </p>
+      </header>
+
+      <section className="iphone-card">
         <div className="flex items-center gap-3 mb-4">
-          <NotebookPen className="text-cyan-300" />
-          <h2 className="text-xl font-bold">Add a note</h2>
+          <div className="h-11 w-11 rounded-2xl bg-cyan-300/20 flex items-center justify-center">
+            <NotebookPen className="text-cyan-200" />
+          </div>
+
+          <h2 className="text-xl font-black">
+            Add a note
+          </h2>
         </div>
 
         <textarea
           value={noteText}
           onChange={(event) => setNoteText(event.target.value)}
-          placeholder="Write your note here..."
+          placeholder="Example: Meet at Lando Stand before qualifying..."
           className="w-full min-h-36 rounded-2xl bg-white/10 border border-white/10 p-4 outline-none resize-none placeholder:text-white/40"
         />
 
         <button
           onClick={addNote}
-          className="mt-4 w-full rounded-2xl bg-cyan-400 text-black font-bold p-4 flex items-center justify-center gap-2"
+          className="mt-4 w-full min-h-[54px] rounded-2xl bg-cyan-300 text-black font-black flex items-center justify-center gap-2 active:scale-[0.98] transition"
         >
           <Plus size={20} />
           Add Note
         </button>
       </section>
 
-      <section className="space-y-4 mt-6">
+      <section className="iphone-list mt-5">
         {notes.length === 0 ? (
-          <div className="glass rounded-3xl p-5 text-white/60">
+          <div className="iphone-card text-white/60">
             No notes yet.
           </div>
         ) : (
           notes.map((note) => (
-            <div key={note.id} className="glass rounded-3xl p-5">
+            <div key={note.id} className="iphone-card">
               <div className="flex justify-between gap-4">
-                <p className="text-white/50 text-sm">{note.createdAt}</p>
+                <p className="text-white/50 text-sm">
+                  {note.createdAt}
+                </p>
 
                 <button
                   onClick={() => deleteNote(note.id)}
-                  className="text-red-300"
+                  className="h-9 w-9 rounded-xl bg-red-400/15 text-red-200 flex items-center justify-center"
                   aria-label="Delete note"
                 >
                   <Trash2 size={18} />
                 </button>
               </div>
 
-              <p className="mt-3 whitespace-pre-wrap">{note.text}</p>
+              <p className="mt-3 whitespace-pre-wrap leading-relaxed">
+                {note.text}
+              </p>
             </div>
           ))
         )}
