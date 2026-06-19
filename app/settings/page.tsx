@@ -16,9 +16,15 @@ import {
 export default function SettingsPage() {
   const router = useRouter()
 
+<<<<<<< HEAD
   const [notifications, setNotifications] = useState<
     NotificationPermission | "unsupported"
   >("default")
+=======
+  const [notifications, setNotifications] = useState<NotificationPermission | "unsupported">(
+    "default"
+  )
+>>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
 
   const [userEmail, setUserEmail] = useState<string>("")
   const [darkMode, setDarkMode] = useState(true)
@@ -67,7 +73,11 @@ export default function SettingsPage() {
 
   const clearSavedData = () => {
     const confirmClear = confirm(
+<<<<<<< HEAD
       "This will clear saved tickets, packing ticks, tent location, weather, notes and reminders. Continue?"
+=======
+      "This will clear saved tickets, packing ticks, tent location, weather and reminders. Continue?"
+>>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
     )
 
     if (!confirmClear) return
@@ -83,6 +93,7 @@ export default function SettingsPage() {
   }
 
   return (
+<<<<<<< HEAD
     <main className="iphone-page text-white">
       <header className="iphone-header">
         <p className="iphone-eyebrow">App controls</p>
@@ -108,12 +119,34 @@ export default function SettingsPage() {
             </h2>
 
             <p className="text-white/60 mt-1 truncate">
+=======
+    <main className="min-h-screen px-5 pt-6 pb-40">
+      <h1 className="text-4xl font-bold">
+        Settings
+      </h1>
+
+      <p className="text-white/60 mt-2">
+        App preferences, notifications and saved data.
+      </p>
+
+      <section className="glass rounded-3xl p-5 mt-6">
+        <div className="flex items-center gap-3">
+          <User className="text-cyan-300" />
+
+          <div>
+            <h2 className="text-xl font-bold">
+              Signed In
+            </h2>
+
+            <p className="text-white/60 mt-1">
+>>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
               {userEmail || "No user found"}
             </p>
           </div>
         </div>
       </section>
 
+<<<<<<< HEAD
       <section className="iphone-list">
         <button
           onClick={requestNotifications}
@@ -126,10 +159,24 @@ export default function SettingsPage() {
           </span>
 
           <span className="text-white/50 text-sm capitalize">
+=======
+      <div className="space-y-4 mt-6">
+        <button
+          onClick={requestNotifications}
+          className="glass rounded-3xl p-5 w-full flex justify-between items-center text-left"
+        >
+          <span className="flex items-center gap-3">
+            <Bell className="text-cyan-300" />
+            Notifications
+          </span>
+
+          <span className="text-white/60 capitalize">
+>>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
             {notifications}
           </span>
         </button>
 
+<<<<<<< HEAD
         <div className="iphone-button">
           <Download className="text-pink-200" />
 
@@ -138,21 +185,40 @@ export default function SettingsPage() {
           </span>
 
           <span className="text-white/50 text-sm">
+=======
+        <div className="glass rounded-3xl p-5 flex justify-between items-center">
+          <span className="flex items-center gap-3">
+            <Download className="text-pink-300" />
+            Offline Data
+          </span>
+
+          <span className="text-white/60">
+>>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
             Enabled
           </span>
         </div>
 
+<<<<<<< HEAD
         <div className="iphone-button">
           <Moon className="text-purple-200" />
 
           <span className="flex-1">
+=======
+        <div className="glass rounded-3xl p-5 flex justify-between items-center gap-4">
+          <span className="flex items-center gap-3">
+            <Moon className="text-purple-300" />
+>>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
             Dark Mode
           </span>
 
           <button
             onClick={() => setDarkMode(!darkMode)}
             className={`relative h-8 w-14 rounded-full transition ${
+<<<<<<< HEAD
               darkMode ? "bg-cyan-300" : "bg-black/20"
+=======
+              darkMode ? "bg-cyan-400" : "bg-black/20"
+>>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
             }`}
             aria-label="Toggle dark mode"
           >
@@ -164,6 +230,7 @@ export default function SettingsPage() {
           </button>
         </div>
 
+<<<<<<< HEAD
         <div className="iphone-button">
           <Smartphone className="text-cyan-200" />
 
@@ -172,23 +239,40 @@ export default function SettingsPage() {
           </span>
 
           <span className="text-white/50 text-sm">
+=======
+        <div className="glass rounded-3xl p-5 flex justify-between items-center">
+          <span className="flex items-center gap-3">
+            <Smartphone className="text-cyan-300" />
+            App Version
+          </span>
+
+          <span className="text-white/60">
+>>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
             1.0.0
           </span>
         </div>
 
         <button
           onClick={signOut}
+<<<<<<< HEAD
           className="iphone-button w-full text-left"
         >
           <LogOut className="text-yellow-200" />
 
           <span className="flex-1">
+=======
+          className="glass rounded-3xl p-5 w-full flex justify-between items-center text-left"
+        >
+          <span className="flex items-center gap-3">
+            <LogOut className="text-yellow-300" />
+>>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
             Sign Out
           </span>
         </button>
 
         <button
           onClick={clearSavedData}
+<<<<<<< HEAD
           className="iphone-button w-full text-left text-red-200"
         >
           <Trash2 />
@@ -205,6 +289,23 @@ export default function SettingsPage() {
         </h2>
 
         <p className="text-white/60 mt-2 leading-relaxed">
+=======
+          className="glass rounded-3xl p-5 w-full flex justify-between items-center text-left text-red-300"
+        >
+          <span className="flex items-center gap-3">
+            <Trash2 />
+            Clear All Saved Data
+          </span>
+        </button>
+      </div>
+
+      <section className="glass rounded-3xl p-5 mt-6">
+        <h2 className="text-xl font-bold">
+          Notification Note
+        </h2>
+
+        <p className="text-white/60 mt-2">
+>>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
           Schedule reminders work locally while the app is open or recently active. Full push notifications when the app is fully closed would need a backend later.
         </p>
       </section>
