@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import BottomNav from "../components/BottomNav"
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import BottomNav from "../components/BottomNav";
 import {
   Bell,
   Download,
@@ -11,96 +11,87 @@ import {
   Smartphone,
   LogOut,
   User,
-} from "lucide-react"
+} from "lucide-react";
 
 export default function SettingsPage() {
-  const router = useRouter()
+  const router = useRouter();
 
-<<<<<<< HEAD
   const [notifications, setNotifications] = useState<
     NotificationPermission | "unsupported"
-  >("default")
-=======
-  const [notifications, setNotifications] = useState<NotificationPermission | "unsupported">(
-    "default"
-  )
->>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
+  >("default");
 
-  const [userEmail, setUserEmail] = useState<string>("")
-  const [darkMode, setDarkMode] = useState(true)
+  const [userEmail, setUserEmail] = useState<string>("");
+  const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("silverstone-user")
-    const savedDarkMode = localStorage.getItem("silverstone-dark-mode")
+    const savedUser = localStorage.getItem("silverstone-user");
+    const savedDarkMode = localStorage.getItem("silverstone-dark-mode");
 
     if (savedUser) {
-      const user = JSON.parse(savedUser)
-      setUserEmail(user.email)
+      try {
+        const user = JSON.parse(savedUser);
+        setUserEmail(user.email || "");
+      } catch {
+        setUserEmail("");
+      }
     }
 
     if (savedDarkMode !== null) {
-      setDarkMode(savedDarkMode === "true")
+      setDarkMode(savedDarkMode === "true");
     }
 
     if (!("Notification" in window)) {
-      setNotifications("unsupported")
+      setNotifications("unsupported");
     } else {
-      setNotifications(Notification.permission)
+      setNotifications(Notification.permission);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    localStorage.setItem("silverstone-dark-mode", String(darkMode))
-    document.documentElement.classList.toggle("light-mode", !darkMode)
-  }, [darkMode])
+    localStorage.setItem("silverstone-dark-mode", String(darkMode));
+    document.documentElement.classList.toggle("light-mode", !darkMode);
+  }, [darkMode]);
 
   const requestNotifications = async () => {
     if (!("Notification" in window)) {
-      alert("Notifications are not supported on this device/browser.")
-      setNotifications("unsupported")
-      return
+      alert("Notifications are not supported on this device/browser.");
+      setNotifications("unsupported");
+      return;
     }
 
-    const permission = await Notification.requestPermission()
-    setNotifications(permission)
+    const permission = await Notification.requestPermission();
+    setNotifications(permission);
 
     if (permission === "granted") {
       new Notification("Silverstone Companion", {
         body: "Notifications are now enabled.",
-      })
+      });
     }
-  }
+  };
 
   const clearSavedData = () => {
     const confirmClear = confirm(
-<<<<<<< HEAD
       "This will clear saved tickets, packing ticks, tent location, weather, notes and reminders. Continue?"
-=======
-      "This will clear saved tickets, packing ticks, tent location, weather and reminders. Continue?"
->>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
-    )
+    );
 
-    if (!confirmClear) return
+    if (!confirmClear) return;
 
-    localStorage.clear()
-    alert("Saved data cleared.")
-    router.push("/login")
-  }
+    localStorage.clear();
+    alert("Saved data cleared.");
+    router.push("/login");
+  };
 
   const signOut = () => {
-    localStorage.removeItem("silverstone-user")
-    router.push("/login")
-  }
+    localStorage.removeItem("silverstone-user");
+    router.push("/login");
+  };
 
   return (
-<<<<<<< HEAD
     <main className="iphone-page text-white">
       <header className="iphone-header">
         <p className="iphone-eyebrow">App controls</p>
 
-        <h1 className="iphone-title">
-          Settings
-        </h1>
+        <h1 className="iphone-title">Settings</h1>
 
         <p className="iphone-subtitle">
           Manage notifications, theme, saved data and your app login.
@@ -114,39 +105,15 @@ export default function SettingsPage() {
           </div>
 
           <div className="min-w-0">
-            <h2 className="text-xl font-black">
-              Signed in
-            </h2>
+            <h2 className="text-xl font-black">Signed in</h2>
 
             <p className="text-white/60 mt-1 truncate">
-=======
-    <main className="min-h-screen px-5 pt-6 pb-40">
-      <h1 className="text-4xl font-bold">
-        Settings
-      </h1>
-
-      <p className="text-white/60 mt-2">
-        App preferences, notifications and saved data.
-      </p>
-
-      <section className="glass rounded-3xl p-5 mt-6">
-        <div className="flex items-center gap-3">
-          <User className="text-cyan-300" />
-
-          <div>
-            <h2 className="text-xl font-bold">
-              Signed In
-            </h2>
-
-            <p className="text-white/60 mt-1">
->>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
               {userEmail || "No user found"}
             </p>
           </div>
         </div>
       </section>
 
-<<<<<<< HEAD
       <section className="iphone-list">
         <button
           onClick={requestNotifications}
@@ -154,71 +121,30 @@ export default function SettingsPage() {
         >
           <Bell className="text-cyan-200" />
 
-          <span className="flex-1">
-            Notifications
-          </span>
+          <span className="flex-1">Notifications</span>
 
           <span className="text-white/50 text-sm capitalize">
-=======
-      <div className="space-y-4 mt-6">
-        <button
-          onClick={requestNotifications}
-          className="glass rounded-3xl p-5 w-full flex justify-between items-center text-left"
-        >
-          <span className="flex items-center gap-3">
-            <Bell className="text-cyan-300" />
-            Notifications
-          </span>
-
-          <span className="text-white/60 capitalize">
->>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
             {notifications}
           </span>
         </button>
 
-<<<<<<< HEAD
         <div className="iphone-button">
           <Download className="text-pink-200" />
 
-          <span className="flex-1">
-            Offline Data
-          </span>
+          <span className="flex-1">Offline Data</span>
 
-          <span className="text-white/50 text-sm">
-=======
-        <div className="glass rounded-3xl p-5 flex justify-between items-center">
-          <span className="flex items-center gap-3">
-            <Download className="text-pink-300" />
-            Offline Data
-          </span>
-
-          <span className="text-white/60">
->>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
-            Enabled
-          </span>
+          <span className="text-white/50 text-sm">Enabled</span>
         </div>
 
-<<<<<<< HEAD
         <div className="iphone-button">
           <Moon className="text-purple-200" />
 
-          <span className="flex-1">
-=======
-        <div className="glass rounded-3xl p-5 flex justify-between items-center gap-4">
-          <span className="flex items-center gap-3">
-            <Moon className="text-purple-300" />
->>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
-            Dark Mode
-          </span>
+          <span className="flex-1">Dark Mode</span>
 
           <button
             onClick={() => setDarkMode(!darkMode)}
             className={`relative h-8 w-14 rounded-full transition ${
-<<<<<<< HEAD
               darkMode ? "bg-cyan-300" : "bg-black/20"
-=======
-              darkMode ? "bg-cyan-400" : "bg-black/20"
->>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
             }`}
             aria-label="Toggle dark mode"
           >
@@ -230,87 +156,44 @@ export default function SettingsPage() {
           </button>
         </div>
 
-<<<<<<< HEAD
         <div className="iphone-button">
           <Smartphone className="text-cyan-200" />
 
-          <span className="flex-1">
-            App Version
-          </span>
+          <span className="flex-1">App Version</span>
 
-          <span className="text-white/50 text-sm">
-=======
-        <div className="glass rounded-3xl p-5 flex justify-between items-center">
-          <span className="flex items-center gap-3">
-            <Smartphone className="text-cyan-300" />
-            App Version
-          </span>
-
-          <span className="text-white/60">
->>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
-            1.0.0
-          </span>
+          <span className="text-white/50 text-sm">1.0.0</span>
         </div>
 
         <button
           onClick={signOut}
-<<<<<<< HEAD
           className="iphone-button w-full text-left"
         >
           <LogOut className="text-yellow-200" />
 
-          <span className="flex-1">
-=======
-          className="glass rounded-3xl p-5 w-full flex justify-between items-center text-left"
-        >
-          <span className="flex items-center gap-3">
-            <LogOut className="text-yellow-300" />
->>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
-            Sign Out
-          </span>
+          <span className="flex-1">Sign Out</span>
         </button>
 
         <button
           onClick={clearSavedData}
-<<<<<<< HEAD
           className="iphone-button w-full text-left text-red-200"
         >
           <Trash2 />
 
-          <span className="flex-1">
-            Clear All Saved Data
-          </span>
+          <span className="flex-1">Clear All Saved Data</span>
         </button>
       </section>
 
       <section className="iphone-card mt-5">
-        <h2 className="text-xl font-black">
-          Notification note
-        </h2>
+        <h2 className="text-xl font-black">Notification note</h2>
 
         <p className="text-white/60 mt-2 leading-relaxed">
-=======
-          className="glass rounded-3xl p-5 w-full flex justify-between items-center text-left text-red-300"
-        >
-          <span className="flex items-center gap-3">
-            <Trash2 />
-            Clear All Saved Data
-          </span>
-        </button>
-      </div>
-
-      <section className="glass rounded-3xl p-5 mt-6">
-        <h2 className="text-xl font-bold">
-          Notification Note
-        </h2>
-
-        <p className="text-white/60 mt-2">
->>>>>>> b7fdf86d610850e9c506c11bbbcc14d0596478e1
-          Schedule reminders work locally while the app is open or recently active. Full push notifications when the app is fully closed would need a backend later.
+          Schedule reminders work locally while the app is open or recently
+          active. Full push notifications when the app is fully closed would
+          need a backend later.
         </p>
       </section>
 
       <BottomNav />
     </main>
-  )
+  );
 }

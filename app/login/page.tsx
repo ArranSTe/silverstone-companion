@@ -139,7 +139,7 @@ export default function LoginPage() {
         <button
           onClick={login}
           disabled={loading}
-          className="mt-6 w-full h-15 rounded-2xl bg-cyan-300 text-black font-black active:scale-[0.98] transition disabled:opacity-50"
+          className="mt-6 w-full h-14 rounded-2xl bg-cyan-300 text-black font-black active:scale-[0.98] transition disabled:opacity-50"
         >
           {loading ? "Logging in..." : "Log In"}
         </button>
