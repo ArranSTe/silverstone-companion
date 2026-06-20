@@ -1,8 +1,9 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import BottomNav from "../components/BottomNav";
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import BottomNav from "../components/BottomNav"
+import { supabase } from "../lib/supabase"
 import {
   Bell,
   Download,
@@ -81,10 +82,20 @@ export default function SettingsPage() {
     router.push("/login");
   };
 
-  const signOut = () => {
-    localStorage.removeItem("silverstone-user");
-    router.push("/login");
-  };
+const signOut = async () => {
+  const { error } = await supabase.auth.signOut()
+
+  if (error) {
+    alert(error.message)
+    return
+  }
+
+  localStorage.removeItem("silverstone-user")
+  localStorage.removeItem("silverstone-preferences")
+  localStorage.removeItem("silverstone-onboarding-complete")
+
+  router.replace("/login")
+}
 
   return (
     <main className="iphone-page text-white">

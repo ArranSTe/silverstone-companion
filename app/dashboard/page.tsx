@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import {
   Backpack,
   CalendarDays,
@@ -16,6 +17,7 @@ import {
 } from "lucide-react";
 
 import BottomNav from "../components/BottomNav";
+import { supabase } from "../lib/supabase";
 import {
   getCountdownToSession,
   getCurrentOrNextSession,
@@ -28,42 +30,98 @@ type SessionState = {
 } | null;
 
 export default function DashboardPage() {
+  const router = useRouter();
+
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const [firstName, setFirstName] = useState("Alex");
   const [sessionState, setSessionState] = useState<SessionState>(null);
   const [stayType, setStayType] = useState<"Camping" | "Hotel">("Camping");
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("silverstone-user");
-    const savedPreferences = localStorage.getItem("silverstone-preferences");
+    const loadDashboard = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-    if (savedUser) {
-      try {
-        const user = JSON.parse(savedUser);
-        setFirstName(user.firstName || "Alex");
-      } catch {
-        setFirstName("Alex");
+      if (!session?.user) {
+        router.replace("/login");
+        return;
       }
-    }
 
-    if (savedPreferences) {
-      try {
-        const preferences = JSON.parse(savedPreferences);
-        setStayType(preferences.stayType || "Camping");
-      } catch {
-        setStayType("Camping");
+      const user = session.user;
+
+      const { data: profile, error } = await supabase
+        .from("user_profiles")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (error) {
+        console.error("Profile error:", error.message);
       }
-    }
 
-    const update = () => {
+      if (profile) {
+        const username =
+          profile.username ||
+          user.user_metadata?.username ||
+          user.email?.split("@")[0] ||
+          "there";
+
+        setFirstName(username);
+        setStayType(profile.stay_type || "Camping");
+
+        localStorage.setItem(
+          "silverstone-user",
+          JSON.stringify({
+            username,
+            firstName: username,
+            email: profile.email || user.email,
+          })
+        );
+
+        localStorage.setItem(
+          "silverstone-preferences",
+          JSON.stringify({
+            ticketType: profile.ticket_type || "Lando Stand",
+            stayType: profile.stay_type || "Camping",
+          })
+        );
+      } else {
+        const username =
+          user.user_metadata?.username || user.email?.split("@")[0] || "there";
+
+        setFirstName(username);
+
+        localStorage.setItem(
+          "silverstone-user",
+          JSON.stringify({
+            username,
+            firstName: username,
+            email: user.email,
+          })
+        );
+      }
+
       setSessionState(getCurrentOrNextSession());
+      setCheckingAuth(false);
     };
 
-    update();
+    loadDashboard();
 
-    const timer = setInterval(update, 30 * 1000);
+    const timer = setInterval(() => {
+      setSessionState(getCurrentOrNextSession());
+    }, 30 * 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [router]);
+
+  if (checkingAuth) {
+    return (
+      <main className="iphone-page text-white flex items-center justify-center">
+        <p className="text-white/60">Checking login...</p>
+      </main>
+    );
+  }
 
   return (
     <main className="iphone-page text-white">
