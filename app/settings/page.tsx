@@ -194,14 +194,21 @@ const signOut = async () => {
       </section>
 
       <section className="iphone-card mt-5">
-        <h2 className="text-xl font-black">Notification note</h2>
+        <h2 className="text-xl font-black">Privacy</h2>
 
         <p className="text-white/60 mt-2 leading-relaxed">
-          Schedule reminders work locally while the app is open or recently
-          active. Full push notifications when the app is fully closed would
-          need a backend later.
+This app stores your tent location, bookmarks, notes and packing checklist on your own device. Your account login and setup profile are stored securely with Supabase. Do not save sensitive personal information in notes.
         </p>
       </section>
+
+      <section className="iphone-card mt-5">
+        <h2 className="text-xl font-black">INFO</h2>
+
+        <p className="text-white/60 mt-2 leading-relaxed">
+Unofficial fan-made Silverstone companion app. Not affiliated with Silverstone, Formula 1, or any teams.
+        </p>
+      </section>
+
 
     </main>
   );
