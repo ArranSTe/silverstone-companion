@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import BottomNav from "../components/BottomNav"
 import { supabase } from "../lib/supabase"
 import {
   Bell,
@@ -204,7 +203,6 @@ const signOut = async () => {
         </p>
       </section>
 
-      <BottomNav />
     </main>
   );
 }

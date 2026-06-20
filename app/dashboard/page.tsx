@@ -16,7 +16,6 @@ import {
   Utensils,
 } from "lucide-react";
 
-import BottomNav from "../components/BottomNav";
 import { supabase } from "../lib/supabase";
 import {
   getCountdownToSession,
@@ -260,7 +259,6 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      <BottomNav />
     </main>
   );
 }

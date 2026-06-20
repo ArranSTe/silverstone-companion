@@ -1,6 +1,5 @@
 "use client"
 
-import BottomNav from "../components/BottomNav"
 import { Bus, Car, Footprints, Train, TrafficCone } from "lucide-react"
 
 const transportItems = [
@@ -82,7 +81,6 @@ export default function TransportPage() {
         })}
       </section>
 
-      <BottomNav />
     </main>
   )
 }

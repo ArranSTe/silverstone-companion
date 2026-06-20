@@ -1,6 +1,5 @@
 "use client"
 
-import BottomNav from "../components/BottomNav"
 import LiveWeather from "../components/LiveWeather"
 
 export default function WeatherPage() {
@@ -49,7 +48,7 @@ export default function WeatherPage() {
         </div>
       </section>
 
-      <BottomNav />
+
     </main>
   )
 }

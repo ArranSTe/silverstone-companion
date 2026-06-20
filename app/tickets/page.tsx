@@ -1,6 +1,5 @@
 "use client"
 
-import BottomNav from "../components/BottomNav"
 import { Ticket, Upload, ImageIcon } from "lucide-react"
 
 export default function TicketsPage() {
@@ -57,7 +56,7 @@ export default function TicketsPage() {
           <Upload className="text-cyan-200" />
 
           <span>
-            Add ticket image later
+            Add Tickets
           </span>
         </button>
 
@@ -74,7 +73,7 @@ export default function TicketsPage() {
         </div>
       </section>
 
-      <BottomNav />
+
     </main>
   )
 }

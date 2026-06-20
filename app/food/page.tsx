@@ -1,6 +1,5 @@
 "use client";
 
-import BottomNav from "../components/BottomNav";
 import {
   AlertCircle,
   Clock,
@@ -171,7 +170,6 @@ export default function FoodPage() {
         </p>
       </section>
 
-      <BottomNav />
     </main>
   );
 }

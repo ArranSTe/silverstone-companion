@@ -1,23 +1,11 @@
 import type { Metadata } from "next"
-import ThemeLoader from "./components/ThemeLoader"
 import "./globals.css"
+import BottomNav from "./components/BottomNav"
+import ScheduleReminderWatcher from "./components/ScheduleReminderWatcher"
 
 export const metadata: Metadata = {
   title: "Silverstone Companion",
-  description: "Offline-ready British GP weekend companion",
-  manifest: "/manifest.json",
-  themeColor: "#07080d",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "black-translucent",
-    title: "Silverstone",
-  },
-}
-
-export const viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
+  description: "Silverstone Companion App",
 }
 
 export default function RootLayout({
@@ -28,8 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeLoader />
+        <ScheduleReminderWatcher />
         {children}
+        <BottomNav />
       </body>
     </html>
   )

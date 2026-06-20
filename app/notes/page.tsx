@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import BottomNav from "../components/BottomNav"
 import { NotebookPen, Plus, Trash2 } from "lucide-react"
 
 type Note = {
@@ -126,7 +125,6 @@ export default function NotesPage() {
         )}
       </section>
 
-      <BottomNav />
     </main>
   )
 }

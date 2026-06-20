@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import BottomNav from "../components/BottomNav"
 import { Backpack, CheckCircle2, Circle } from "lucide-react"
 
 const baseItems = [
@@ -129,7 +128,6 @@ export default function PackingPage() {
         })}
       </section>
 
-      <BottomNav />
     </main>
   )
 }

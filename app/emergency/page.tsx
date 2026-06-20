@@ -1,6 +1,5 @@
 "use client"
 
-import BottomNav from "../components/BottomNav"
 import { Cross, MapPin, Phone, ShieldAlert } from "lucide-react"
 
 export default function EmergencyPage() {
@@ -88,7 +87,6 @@ export default function EmergencyPage() {
         </div>
       </section>
 
-      <BottomNav />
     </main>
   )
 }
