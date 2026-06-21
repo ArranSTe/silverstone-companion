@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { LogIn } from "lucide-react"
 import { supabase } from "../lib/supabase"
@@ -11,6 +11,40 @@ export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
+  const [checkingSession, setCheckingSession] = useState(true)
+
+  useEffect(() => {
+    const checkExistingSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+
+      if (!session?.user) {
+        setCheckingSession(false)
+        return
+      }
+
+      const { data: profile, error } = await supabase
+        .from("user_profiles")
+        .select("onboarding_complete")
+        .eq("id", session.user.id)
+        .maybeSingle()
+
+      if (error) {
+        console.error("Profile check error:", error.message)
+        setCheckingSession(false)
+        return
+      }
+
+      if (profile?.onboarding_complete) {
+        router.replace("/dashboard")
+      } else {
+        router.replace("/setup")
+      }
+    }
+
+    checkExistingSession()
+  }, [router])
 
   const login = async () => {
     if (!email.trim() || !password.trim()) {
@@ -66,6 +100,7 @@ export default function LoginPage() {
         JSON.stringify({
           ticketType: profile.ticket_type,
           stayType: profile.stay_type,
+          goingDays: profile.going_days || [],
         })
       )
 
@@ -91,16 +126,22 @@ export default function LoginPage() {
     setLoading(false)
   }
 
+  if (checkingSession) {
+    return (
+      <main className="min-h-screen max-w-[430px] mx-auto px-6 py-10 flex flex-col justify-center text-white">
+        <p className="text-white/60 text-center">
+          Checking your login...
+        </p>
+      </main>
+    )
+  }
+
   return (
     <main className="min-h-screen max-w-[430px] mx-auto px-6 py-10 flex flex-col justify-center text-white">
       <div className="mb-10">
-        <p className="iphone-eyebrow">
-          Welcome back
-        </p>
+        <p className="iphone-eyebrow">Welcome back</p>
 
-        <h1 className="iphone-title mt-2">
-          Log in
-        </h1>
+        <h1 className="iphone-title mt-2">Log in</h1>
 
         <p className="iphone-subtitle">
           Use your account to bring back your Silverstone setup.

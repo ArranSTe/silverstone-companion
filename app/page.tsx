@@ -8,7 +8,7 @@ export default function HomePage() {
   const router = useRouter()
 
   useEffect(() => {
-    const checkLogin = async () => {
+    const checkSession = async () => {
       const {
         data: { session },
       } = await supabase.auth.getSession()
@@ -31,7 +31,7 @@ export default function HomePage() {
       }
     }
 
-    checkLogin()
+    checkSession()
   }, [router])
 
   return (
