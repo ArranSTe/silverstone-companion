@@ -10,11 +10,16 @@ import {
   useMap,
 } from "react-leaflet"
 import L from "leaflet"
-import { LocateFixed, MapPin, Save } from "lucide-react"
+import { Flag, LocateFixed, MapPin, Save } from "lucide-react"
 
 type LocationPoint = {
   lat: number
   lng: number
+}
+
+const SILVERSTONE_LOCATION: LocationPoint = {
+  lat: 52.0786,
+  lng: -1.0169,
 }
 
 function FlyToLocation({ location }: { location: LocationPoint | null }) {
@@ -27,6 +32,20 @@ function FlyToLocation({ location }: { location: LocationPoint | null }) {
       duration: 1,
     })
   }, [location, map])
+
+  useEffect(() => {
+    const centreSilverstone = () => {
+      map.flyTo([SILVERSTONE_LOCATION.lat, SILVERSTONE_LOCATION.lng], 15, {
+        duration: 1,
+      })
+    }
+
+    window.addEventListener("centre-silverstone-map", centreSilverstone)
+
+    return () => {
+      window.removeEventListener("centre-silverstone-map", centreSilverstone)
+    }
+  }, [map])
 
   return null
 }
@@ -58,30 +77,30 @@ export default function TentMapClient() {
     })
   }, [])
 
-  const tentIcon = useMemo(() => {
-    return L.divIcon({
-      className: "",
-      html: `
-        <div style="
-          transform: translate(-50%, -100%);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 42px;
-          height: 42px;
-          border-radius: 18px 18px 18px 4px;
-          background: #22c55e;
-          border: 3px solid white;
-          box-shadow: 0 12px 30px rgba(0,0,0,0.45);
-          color: white;
-          font-size: 24px;
-          font-weight: 900;
-        ">⛺</div>
-      `,
-      iconSize: [42, 42],
-      iconAnchor: [21, 42],
-    })
-  }, [])
+const tentIcon = useMemo(() => {
+  return L.divIcon({
+    className: "tent-marker-icon",
+    html: `
+      <div style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 18px 18px 18px 4px;
+        background: #22c55e;
+        border: 3px solid white;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+        color: white;
+        font-size: 24px;
+        font-weight: 900;
+      ">⛺</div>
+    `,
+    iconSize: [42, 42],
+    iconAnchor: [21, 42],
+    popupAnchor: [0, -42],
+  })
+}, [])
 
   useEffect(() => {
     const savedTent = localStorage.getItem("silverstone-tent-location")
@@ -157,6 +176,11 @@ export default function TentMapClient() {
 
     setCurrentLocation({ ...currentLocation })
   }
+
+  const centreOnSilverstone = () => {
+  setCurrentLocation((current) => current)
+  window.dispatchEvent(new CustomEvent("centre-silverstone-map"))
+}
 
   const startPosition: [number, number] = currentLocation
     ? [currentLocation.lat, currentLocation.lng]

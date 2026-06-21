@@ -15,9 +15,9 @@ export default function MapPage() {
     setScale((current) => Math.min(current + 0.25, 4))
   }
 
-  const zoomOut = () => {
-    setScale((current) => Math.max(current - 0.25, 1))
-  }
+const zoomOut = () => {
+  setScale((current) => Math.max(current - 0.25, 0.35))
+}
 
   const resetMap = () => {
     setScale(1)
@@ -53,7 +53,7 @@ export default function MapPage() {
     if (event.deltaY < 0) {
       setScale((current) => Math.min(current + 0.15, 4))
     } else {
-      setScale((current) => Math.max(current - 0.15, 1))
+      setScale((current) => Math.max(current - 0.15, 0.35))
     }
   }
 
