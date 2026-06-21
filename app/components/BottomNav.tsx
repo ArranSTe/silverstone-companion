@@ -1,9 +1,18 @@
 "use client"
 
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { House, Calendar, Map, Ticket, Settings } from "lucide-react"
 
+const hiddenRoutes = ["/login", "/signup", "/setup"]
+
 export default function BottomNav() {
+  const pathname = usePathname()
+
+  if (hiddenRoutes.includes(pathname)) {
+    return null
+  }
+
   return (
     <nav className="bottom-nav-fixed glass">
       <Link href="/dashboard" aria-label="Dashboard" className="bottom-nav-icon">

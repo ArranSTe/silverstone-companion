@@ -78,13 +78,14 @@ export default function DashboardPage() {
           })
         );
 
-        localStorage.setItem(
-          "silverstone-preferences",
-          JSON.stringify({
-            ticketType: profile.ticket_type || "Lando Stand",
-            stayType: profile.stay_type || "Camping",
-          })
-        );
+      localStorage.setItem(
+        "silverstone-preferences",
+        JSON.stringify({
+          ticketType: profile.ticket_type || "Lando Stand",
+          stayType: profile.stay_type || "Camping",
+          goingDays: profile.going_days || [],
+        })
+      )
       } else {
         const username =
           user.user_metadata?.username || user.email?.split("@")[0] || "there";
