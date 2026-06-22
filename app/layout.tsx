@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import "./globals.css"
 import BottomNav from "./components/BottomNav"
 import ScheduleReminderWatcher from "./components/ScheduleReminderWatcher"
+import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
 
 export const metadata: Metadata = {
   title: "Silverstone Companion",
@@ -19,6 +20,7 @@ export default function RootLayout({
         <ScheduleReminderWatcher />
         {children}
         <BottomNav />
+        <ServiceWorkerRegister />
       </body>
     </html>
   )

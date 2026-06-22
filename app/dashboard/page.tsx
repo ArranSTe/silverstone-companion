@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
-import { useRouter } from "next/navigation";
 import {
   Backpack,
   CalendarDays,
@@ -16,7 +15,6 @@ import {
   Utensils,
 } from "lucide-react";
 
-import { supabase } from "../lib/supabase";
 import {
   getCountdownToSession,
   getCurrentOrNextSession,
@@ -29,95 +27,83 @@ type SessionState = {
 } | null;
 
 export default function DashboardPage() {
-  const router = useRouter();
-
-  const [checkingAuth, setCheckingAuth] = useState(true);
   const [firstName, setFirstName] = useState("Alex");
   const [sessionState, setSessionState] = useState<SessionState>(null);
   const [stayType, setStayType] = useState<"Camping" | "Hotel">("Camping");
+  const [isOffline, setIsOffline] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const loadDashboard = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+    function updateOnlineStatus() {
+      setIsOffline(!navigator.onLine);
+    }
 
-      const { data: profile, error } = await supabase
-        .from("user_profiles")
-        .select("*")
-        .eq("id", user.id)
-        .maybeSingle();
+    updateOnlineStatus();
 
-      if (error) {
-        console.error("Profile error:", error.message);
-      }
+    window.addEventListener("online", updateOnlineStatus);
+    window.addEventListener("offline", updateOnlineStatus);
 
-      if (profile) {
+    try {
+      const savedUser = localStorage.getItem("silverstone-user");
+      const savedPreferences = localStorage.getItem("silverstone-preferences");
+
+      if (savedUser) {
+        const user = JSON.parse(savedUser);
+
         const username =
-          profile.username ||
-          user.user_metadata?.username ||
-          user.email?.split("@")[0] ||
-          "there";
+          user.firstName ||
+          user.username ||
+          user.name ||
+          "Alex";
 
         setFirstName(username);
-        setStayType(profile.stay_type || "Camping");
-
-        localStorage.setItem(
-          "silverstone-user",
-          JSON.stringify({
-            username,
-            firstName: username,
-            email: profile.email || user.email,
-          })
-        );
-
-      localStorage.setItem(
-        "silverstone-preferences",
-        JSON.stringify({
-          ticketType: profile.ticket_type || "Lando Stand",
-          stayType: profile.stay_type || "Camping",
-          goingDays: profile.going_days || [],
-        })
-      )
-      } else {
-        const username =
-          user.user_metadata?.username || user.email?.split("@")[0] || "there";
-
-        setFirstName(username);
-
-        localStorage.setItem(
-          "silverstone-user",
-          JSON.stringify({
-            username,
-            firstName: username,
-            email: user.email,
-          })
-        );
       }
 
-      setSessionState(getCurrentOrNextSession());
-      setCheckingAuth(false);
-    };
+      if (savedPreferences) {
+        const preferences = JSON.parse(savedPreferences);
 
-    loadDashboard();
+        if (preferences.stayType === "Hotel") {
+          setStayType("Hotel");
+        } else {
+          setStayType("Camping");
+        }
+      }
+    } catch (error) {
+      console.error("Local storage error:", error);
+    }
+
+    setSessionState(getCurrentOrNextSession());
+    setIsLoaded(true);
 
     const timer = setInterval(() => {
       setSessionState(getCurrentOrNextSession());
     }, 30 * 1000);
 
-    return () => clearInterval(timer);
-  }, [router]);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener("online", updateOnlineStatus);
+      window.removeEventListener("offline", updateOnlineStatus);
+    };
+  }, []);
 
-  if (checkingAuth) {
+  if (!isLoaded) {
     return (
       <main className="iphone-page text-white flex items-center justify-center">
-        <p className="text-white/60">Checking login...</p>
+        <p className="text-white/60">Loading...</p>
       </main>
     );
   }
 
   return (
     <main className="iphone-page text-white">
+      {isOffline && (
+        <section className="mb-5 rounded-2xl bg-yellow-300/15 border border-yellow-200/20 px-4 py-3">
+          <p className="text-yellow-100 text-sm font-semibold">
+            Offline mode — saved dashboard is still available.
+          </p>
+        </section>
+      )}
+
       <header className="flex items-center justify-between gap-4 mb-7">
         <div className="min-w-0">
           <p className="iphone-eyebrow">Silverstone Companion</p>
@@ -252,7 +238,6 @@ export default function DashboardPage() {
           />
         </div>
       </section>
-
     </main>
   );
 }

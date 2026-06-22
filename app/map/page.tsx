@@ -1,7 +1,7 @@
 "use client"
 
-import { useRef, useState } from "react"
-import { MapPin, Minus, Plus, RotateCcw } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { MapPin, Minus, Plus, RotateCcw, WifiOff } from "lucide-react"
 
 export default function MapPage() {
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -10,14 +10,32 @@ export default function MapPage() {
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [dragging, setDragging] = useState(false)
   const [lastPoint, setLastPoint] = useState({ x: 0, y: 0 })
+  const [isOffline, setIsOffline] = useState(false)
+  const [mapFailed, setMapFailed] = useState(false)
+
+  useEffect(() => {
+    function updateOnlineStatus() {
+      setIsOffline(!navigator.onLine)
+    }
+
+    updateOnlineStatus()
+
+    window.addEventListener("online", updateOnlineStatus)
+    window.addEventListener("offline", updateOnlineStatus)
+
+    return () => {
+      window.removeEventListener("online", updateOnlineStatus)
+      window.removeEventListener("offline", updateOnlineStatus)
+    }
+  }, [])
 
   const zoomIn = () => {
     setScale((current) => Math.min(current + 0.25, 4))
   }
 
-const zoomOut = () => {
-  setScale((current) => Math.max(current - 0.25, 0.35))
-}
+  const zoomOut = () => {
+    setScale((current) => Math.max(current - 0.25, 0.35))
+  }
 
   const resetMap = () => {
     setScale(1)
@@ -65,9 +83,26 @@ const zoomOut = () => {
         <h1 className="iphone-title">Map</h1>
 
         <p className="iphone-subtitle">
-          Pinch, zoom, drag and move around the official Silverstone map.
+          Pinch, zoom, drag and move around the Silverstone map.
         </p>
       </header>
+
+      {isOffline && (
+        <section className="iphone-card mb-4 border border-yellow-200/20 bg-yellow-300/10">
+          <div className="flex items-center gap-3">
+            <div className="h-12 w-12 rounded-2xl bg-yellow-300/20 flex items-center justify-center">
+              <WifiOff className="text-yellow-100" />
+            </div>
+
+            <div>
+              <h2 className="text-lg font-black">Offline mode</h2>
+              <p className="text-yellow-100/75 text-sm mt-1">
+                The saved map should still work without signal.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="iphone-card mb-4">
         <div className="flex items-center gap-3">
@@ -76,7 +111,7 @@ const zoomOut = () => {
           </div>
 
           <div>
-            <h2 className="text-xl font-black">Official map</h2>
+            <h2 className="text-xl font-black">Offline map</h2>
             <p className="text-white/60 text-sm mt-1">
               Use the buttons or drag the map around.
             </p>
@@ -124,22 +159,38 @@ const zoomOut = () => {
             startDrag(touch.clientX, touch.clientY)
           }}
           onTouchMove={(event) => {
+            event.preventDefault()
             const touch = event.touches[0]
             moveDrag(touch.clientX, touch.clientY)
           }}
           onTouchEnd={stopDrag}
         >
-          <img
-            src="/silverstone-official-map.jpg"
-            alt="Official Silverstone map"
-            draggable={false}
-            className="absolute left-1/2 top-1/2 max-w-none select-none"
-            style={{
-              width: "1050px",
-              transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px)) scale(${scale})`,
-              transformOrigin: "center center",
-            }}
-          />
+          {!mapFailed ? (
+            <img
+              src="/silverstone-official-map.jpg"
+              alt="Silverstone map"
+              draggable={false}
+              onError={() => setMapFailed(true)}
+              className="absolute left-1/2 top-1/2 max-w-none select-none"
+              style={{
+                width: "1050px",
+                transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px)) scale(${scale})`,
+                transformOrigin: "center center",
+              }}
+            />
+          ) : (
+            <div className="h-full w-full flex items-center justify-center p-6 text-center">
+              <div>
+                <h2 className="text-2xl font-black mb-3">Map image missing</h2>
+                <p className="text-white/60 leading-relaxed">
+                  Add your map image to the public folder and name it:
+                </p>
+                <p className="mt-3 font-bold text-cyan-200">
+                  silverstone-official-map.jpg
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
