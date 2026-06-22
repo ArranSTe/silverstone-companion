@@ -42,13 +42,6 @@ export default function DashboardPage() {
         data: { session },
       } = await supabase.auth.getSession();
 
-      if (!session?.user) {
-        router.replace("/login");
-        return;
-      }
-
-      const user = session.user;
-
       const { data: profile, error } = await supabase
         .from("user_profiles")
         .select("*")

@@ -1,7 +1,6 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { Flag, LocateFixed, MapPin, Save } from "lucide-react"
 
 const TentMapClient = dynamic(() => import("../components/TentMapClient"), {
   ssr: false,
