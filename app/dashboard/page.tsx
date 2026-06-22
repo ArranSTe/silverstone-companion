@@ -238,6 +238,11 @@ export default function DashboardPage() {
           />
         </div>
       </section>
+
+      <section className="mt-5 mb-24 rounded-[28px] bg-yellow-300 text-black p-5 shadow-xl">
+        !!! App Still In Beta 1.00, Full Release On 28th. Info with still save !!!
+      </section>
+
     </main>
   );
 }
