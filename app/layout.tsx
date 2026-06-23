@@ -3,6 +3,7 @@ import "./globals.css"
 import BottomNav from "./components/BottomNav"
 import ScheduleReminderWatcher from "./components/ScheduleReminderWatcher"
 import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
+import { Analytics } from "@vercel/analytics/react"
 
 export const metadata: Metadata = {
   title: "Silverstone Companion",
@@ -21,6 +22,7 @@ export default function RootLayout({
         {children}
         <BottomNav />
         <ServiceWorkerRegister />
+        <Analytics />
       </body>
     </html>
   )
