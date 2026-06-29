@@ -171,7 +171,7 @@ const signOut = async () => {
 
           <span className="flex-1">App Version</span>
 
-          <span className="text-white/50 text-sm">1.0.0</span>
+          <span className="text-white/50 text-sm">1.0.1</span>
         </div>
 
         <button

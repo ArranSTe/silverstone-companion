@@ -358,6 +358,12 @@ export default function GrandstandsPage() {
     mapLastTouchCenter.current = null;
   };
 
+  const openGrandstandView = (grandstand: Grandstand) => {
+  window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+  setSelectedGrandstand(grandstand);
+};
+
+
   const toggleGrandstand = (grandstandId: string) => {
     setCheckedGrandstands((current) => {
       if (current.includes(grandstandId)) {
@@ -466,7 +472,7 @@ export default function GrandstandsPage() {
               grandstand={grandstand}
               checked={checkedGrandstands.includes(grandstand.id)}
               onToggle={() => toggleGrandstand(grandstand.id)}
-              onView={() => setSelectedGrandstand(grandstand)}
+              onView={() => openGrandstandView(grandstand)}
             />
           ))}
         </div>
@@ -485,46 +491,47 @@ export default function GrandstandsPage() {
               grandstand={grandstand}
               checked={checkedGrandstands.includes(grandstand.id)}
               onToggle={() => toggleGrandstand(grandstand.id)}
-              onView={() => setSelectedGrandstand(grandstand)}
+              onView={() => openGrandstandView(grandstand)}
             />
           ))}
         </div>
       </section>
+{selectedGrandstand && (
+  <div className="fixed inset-0 z-[9999] bg-black/95 overflow-y-auto">
+    <div className="min-h-screen flex items-start justify-center px-4 pt-[calc(env(safe-area-inset-top)+18px)] pb-6">
+      <div className="relative w-full max-w-xl rounded-[32px] bg-black/80 p-4 pt-16 border border-white/10">
+        <button
+          type="button"
+          onClick={() => setSelectedGrandstand(null)}
+          className="absolute right-4 top-4 z-[10000] h-11 w-11 rounded-full bg-white/15 text-white flex items-center justify-center active:scale-95 border border-white/10"
+          aria-label="Close grandstand view"
+        >
+          <X size={25} />
+        </button>
 
-      {selectedGrandstand && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/95 p-4">
-          <button
-            type="button"
-            onClick={() => setSelectedGrandstand(null)}
-            className="absolute right-4 top-4 z-[10000] h-12 w-12 rounded-full bg-white/15 text-white flex items-center justify-center active:scale-95"
-            aria-label="Close grandstand view"
-          >
-            <X size={26} />
-          </button>
+        <div className="mb-4 pr-12">
+          <p className="text-cyan-200 text-sm font-black">
+            {selectedGrandstand.location}
+          </p>
 
-          <div className="w-full max-w-xl">
-            <div className="mb-4 pr-14">
-              <p className="text-cyan-200 text-sm font-black">
-                {selectedGrandstand.location}
-              </p>
-
-              <h2 className="text-3xl font-black">
-                {selectedGrandstand.name}
-              </h2>
-            </div>
-
-            <img
-              src={selectedGrandstand.image}
-              alt={`${selectedGrandstand.name} view`}
-              className="max-h-[70vh] w-full rounded-3xl object-contain bg-neutral-900"
-            />
-
-            <p className="mt-4 text-white/60 leading-relaxed">
-              {selectedGrandstand.description}
-            </p>
-          </div>
+          <h2 className="text-3xl font-black">
+            {selectedGrandstand.name}
+          </h2>
         </div>
-      )}
+
+        <img
+          src={selectedGrandstand.image}
+          alt={`${selectedGrandstand.name} view`}
+          className="max-h-[60vh] w-full rounded-3xl object-contain bg-neutral-900"
+        />
+
+        <p className="mt-4 text-white/60 leading-relaxed">
+          {selectedGrandstand.description}
+        </p>
+      </div>
+    </div>
+  </div>
+)}
     </main>
   );
 }
