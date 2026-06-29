@@ -1,57 +1,83 @@
-const CACHE_NAME = "silverstone-companion-v1";
+const CACHE_NAME = "silverstone-companion-v5"
 
-const urlsToCache = [
+const STATIC_ASSETS = [
   "/",
   "/dashboard",
-  "/map",
-  "/tent-map",
   "/schedule",
-  "/tickets",
-  "/weather",
+  "/stage-schedule",
   "/packing",
-  "/emergency",
+  "/tickets",
+  "/map",
   "/food",
+  "/grandstands",
   "/transport",
+  "/emergency",
   "/notes",
-  "/settings",
+
   "/silverstone-official-map.jpg",
-  "/manifest.json",
-  "/192x192.png",
-  "/512x512.png",
-];
+  "/silverstone-official-map.png",
+  "/stand-map.jpg",
+
+  "/grandstands/stowe.jpg",
+  "/grandstands/club-corner.jpg",
+  "/grandstands/abbey.jpg",
+  "/grandstands/village.jpg",
+  "/grandstands/becketts.jpg",
+  "/grandstands/hamilton-straight.jpg",
+  "/grandstands/farm-curve.jpg",
+  "/grandstands/the-loop.jpg",
+  "/grandstands/national.jpg",
+  "/grandstands/brooklands.jpg",
+  "/grandstands/luffield.jpg",
+  "/grandstands/woodcote.jpg",
+  "/grandstands/copse.jpg",
+  "/grandstands/chapel.jpg",
+  "/grandstands/vale.jpg"
+]
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache);
+      return cache.addAll(STATIC_ASSETS)
     })
-  );
+  )
 
-  self.skipWaiting();
-});
+  self.skipWaiting()
+})
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) =>
-      Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames
+          .filter((cacheName) => cacheName !== CACHE_NAME)
+          .map((cacheName) => caches.delete(cacheName))
       )
-    )
-  );
+    })
+  )
 
-  self.clients.claim();
-});
+  self.clients.claim()
+})
 
 self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return
+
   event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request).then((cachedResponse) => {
-        return cachedResponse || caches.match("/");
-      });
+    caches.match(event.request).then((cachedResponse) => {
+      if (cachedResponse) {
+        return cachedResponse
+      }
+
+      return fetch(event.request)
+        .then((networkResponse) => {
+          return caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, networkResponse.clone())
+            return networkResponse
+          })
+        })
+        .catch(() => {
+          return caches.match("/")
+        })
     })
-  );
-});
+  )
+})

@@ -19,9 +19,34 @@ import {
 
 import {
   getCountdownToSession,
-  getCurrentOrNextSession,
+  scheduleSessions,
   type ScheduleSession,
 } from "../data/schedule";
+
+function getSessionDateTime(session: ScheduleSession) {
+  return new Date(`${session.date}T${session.startTime}:00+01:00`);
+}
+
+function getDashboardNextSession(): ScheduleSession | null {
+  const now = new Date();
+
+  const dashboardSessions = scheduleSessions.filter((session) => {
+    const isGatesOpen = session.title.toLowerCase().includes("gates open");
+    const isOnTrack = session.type === "on-track";
+
+    return isGatesOpen || isOnTrack;
+  });
+
+  const sortedSessions = [...dashboardSessions].sort((a, b) => {
+    return getSessionDateTime(a).getTime() - getSessionDateTime(b).getTime();
+  });
+
+  const nextSession = sortedSessions.find((session) => {
+    return getSessionDateTime(session).getTime() >= now.getTime();
+  });
+
+  return nextSession || sortedSessions[sortedSessions.length - 1] || null;
+}
 
 export default function DashboardPage() {
   const [firstName, setFirstName] = useState("Alex");
@@ -69,11 +94,11 @@ export default function DashboardPage() {
       console.error("Local storage error:", error);
     }
 
-    setSessionState(getCurrentOrNextSession());
+    setSessionState(getDashboardNextSession());
     setIsLoaded(true);
 
     const timer = setInterval(() => {
-      setSessionState(getCurrentOrNextSession());
+      setSessionState(getDashboardNextSession());
     }, 30 * 1000);
 
     return () => {
@@ -83,15 +108,15 @@ export default function DashboardPage() {
     };
   }, []);
 
-const countdown = sessionState
-  ? getCountdownToSession(sessionState)
-  : {
-      days: 0,
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-      label: "No session",
-    };
+  const countdown = sessionState
+    ? getCountdownToSession(sessionState)
+    : {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        label: "No session",
+      };
 
   if (!isLoaded) {
     return (
@@ -162,7 +187,7 @@ const countdown = sessionState
             </h2>
 
             <p className="text-white/65 mt-3">
-              Your session countdown will appear here.
+              Gates open and on-track sessions will appear here.
             </p>
           </>
         )}
